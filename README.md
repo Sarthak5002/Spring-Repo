@@ -10,7 +10,7 @@ It demonstrates fundamental concepts like **RESTful APIs**, **project structure*
 - ✅ Understanding Spring Boot project structure
 - ✅ Creating and running a Spring Boot application
 - ✅ Building and running an OCI/Docker image
-- ✅ Spring Web (Controllers, Services, Repositories)
+- ✅ Spring Web (Controllers, model, Repositories)
 
 ---
 
@@ -19,7 +19,7 @@ It demonstrates fundamental concepts like **RESTful APIs**, **project structure*
 springboot-starter/
  ├── src/main/java/...   # Application source code
  │    ├── controller/    # REST Controllers (API endpoints)
- │    ├── service/       # Business logic
+ │    ├── model/         # Data Representation
  │    └── repository/    # Database layer (Spring Data JPA)
  ├── src/main/resources/ # Application resources (application.properties, static files)
  ├── pom.xml             # Maven dependencies
