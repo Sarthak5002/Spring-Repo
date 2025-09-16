@@ -2,6 +2,7 @@ package com.example.CRUDApp.controller;
 
 import com.example.CRUDApp.model.Car;
 import com.example.CRUDApp.repository.CarRepository;
+import com.example.CRUDApp.service.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +18,14 @@ public class CarController {
     @Autowired
     private CarRepository carRepository;
 
+    @Autowired
+    private CarService carService;
+
     @GetMapping("/getAllCars")
     public ResponseEntity<List<Car>> getAllCars() {
 
         try {
-            List<Car> carList = new ArrayList<>(carRepository.findAll());
+            List<Car> carList = carService.getCarAllEntries();
 
             if(carList.isEmpty()){
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -36,7 +40,7 @@ public class CarController {
 
     @GetMapping("/getCarById/{id}")
     public ResponseEntity<Car> getCarById(@PathVariable Long id) {
-        Optional<Car> carData = carRepository.findById(id);
+        Optional<Car> carData = carService.getCarById(id);
 
         if(carData.isPresent()) {
             return new ResponseEntity<>(carData.get(), HttpStatus.OK);
@@ -47,9 +51,9 @@ public class CarController {
 
     @PostMapping("/addCar")
     public ResponseEntity<Car> addCar(@RequestBody Car car) {
-        Car carObj = carRepository.save(car);
+       carService.saveCarEntry(car);
 
-        return new ResponseEntity<>(carObj, HttpStatus.OK);
+        return new ResponseEntity<>(car, HttpStatus.OK);
     }
 
     @PostMapping("/updateCarById/{id}")
@@ -72,10 +76,10 @@ public class CarController {
 
     @DeleteMapping("/deleteCar/{id}")
     public ResponseEntity<Void> deleteCar(@PathVariable Long id) {
-        Optional<Car> carData = carRepository.findById(id);
+        Optional<Car> carData = carService.getCarById(id);
 
         if(carData.isPresent()) {
-            carRepository.deleteById(id);
+            carService.deleteCarEntry(id);
             return new ResponseEntity<>(HttpStatus.OK);
         }
 
