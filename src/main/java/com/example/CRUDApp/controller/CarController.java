@@ -59,18 +59,9 @@ public class CarController {
     @PostMapping("/updateCarById/{id}")
     public ResponseEntity<Car> updateCarById(@PathVariable Long id, @RequestBody Car newCarData) {
 
-        Optional<Car> oldCarData = carRepository.findById(id);
-
-        if(oldCarData.isPresent()) {
-            Car updatedCarData = oldCarData.get();
-            updatedCarData.setBrand(newCarData.getBrand());
-            updatedCarData.setModel(newCarData.getModel());
-
-            Car carObj = carRepository.save(updatedCarData);
-            return new ResponseEntity<>(carObj, HttpStatus.OK);
-        }
-
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return carService.updateCarEntry(id, newCarData)
+                .map(updatedCar -> new ResponseEntity<>(updatedCar, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
 
     }
 

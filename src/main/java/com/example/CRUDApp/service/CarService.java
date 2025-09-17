@@ -26,8 +26,12 @@ public class CarService {
         return carRepository.findById(id);
     }
 
-    public Optional<Car> updateCarEntry() {
-
+    public Optional<Car> updateCarEntry(Long id, Car newCarData) {
+        return carRepository.findById(id).map(oldCarEntry -> {
+                oldCarEntry.setBrand(newCarData.getBrand());
+                oldCarEntry.setModel(newCarData.getModel());
+                return carRepository.save(oldCarEntry);
+        });
     }
 
     public void deleteCarEntry(Long id) {
