@@ -26,13 +26,41 @@ public class CarService {
         return carRepository.findById(id);
     }
 
+//    public Optional<Car> updateCarEntry(Long id, Car newCarData) {
+//        return carRepository.findById(id).map(oldCarEntry -> {
+//                oldCarEntry.setBrand(newCarData.getBrand());
+//                oldCarEntry.setModel(newCarData.getModel());
+//                return carRepository.save(oldCarEntry);
+//        });
+//    }
+
     public Optional<Car> updateCarEntry(Long id, Car newCarData) {
         return carRepository.findById(id).map(oldCarEntry -> {
-                oldCarEntry.setBrand(newCarData.getBrand());
-                oldCarEntry.setModel(newCarData.getModel());
-                return carRepository.save(oldCarEntry);
+
+            // Basic fields
+            oldCarEntry.setBrand(newCarData.getBrand());
+            oldCarEntry.setModel(newCarData.getModel());
+            oldCarEntry.setColor(newCarData.getColor());
+            oldCarEntry.setYearOfManufacture(newCarData.getYearOfManufacture());
+            oldCarEntry.setPrice(newCarData.getPrice());
+            oldCarEntry.setFuelType(newCarData.getFuelType());
+            oldCarEntry.setTransmission(newCarData.getTransmission());
+            oldCarEntry.setMileage(newCarData.getMileage());
+            oldCarEntry.setAvailable(newCarData.isAvailable());
+            oldCarEntry.setRegistrationDate(newCarData.getRegistrationDate());
+
+            // For collection fields
+            oldCarEntry.setFeatures(newCarData.getFeatures());
+
+            // For embedded object
+            if (newCarData.getDimensions() != null) {
+                oldCarEntry.setDimensions(newCarData.getDimensions());
+            }
+
+            return carRepository.save(oldCarEntry);
         });
     }
+
 
     public void deleteCarEntry(Long id) {
         carRepository.deleteById(id);
